@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Settings
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="static/pages.css">
+{% endblock %}
+
+{% block main %}
+<!-- id HTML, name JAVASCRIPT -->
+
+	<div style="text-align: center;">
+		{% if col == "red"%}
+			<label style="color: red;" id="msg_settings" name="msg_settings">{{ msg }}</label><br>
+		{% else %}
+			<label style="color: green;" id="msg_settings" name="msg_settings">{{ msg }}</label><br>
+		{% endif %}
+	</div>
+
+	<div class="main_info">
+		<div>
+	<!--		<form id="f_settings" name="f_settings" action="/settings" method="post"> -->
+			<table class="main_table">
+				<thead>
+					<caption style="text-align: left; font-size:large;"><label>Change settings</label><button style="float: right;" type="button" name="b_settings" id="b_settings" onclick="save_settings()">Save settings</button></caption>
+				</thead>
+				<tbody>
+					<!-- PIC and FO -->
+					<tr>
+						{% if name %}
+							<td><p>Enter your name</p></td><td><input type="text" autofocus placeholder="Your name here" id="pil_name" name="pil_name" value="{{ name }}"></td>
+						{% else%}
+							<td><p>Enter your name</p></td><td><input type="text" autofocus placeholder="Your name here" id="pil_name" name="pil_name"></td>
+						{% endif %}
+					</tr><tr>
+						<td><p>Autolog time as PIC or FO</p></td>
+						<td>
+							{% if role == 'PIC' %}
+								<label for="pic">PIC</label><input style="width: 30px;" id ="pic" name = "pic" type="radio" checked>
+								<label for="fo">FO</label><input style="width: 30px;" id ="fo" name = "fo" type="radio"><br>						
+							{% elif role == 'FO' %}
+								<label for="pic">PIC</label><input style="width: 30px;" id ="pic" name = "pic" type="radio">
+								<label for="fo">FO</label><input style="width: 30px;" id ="fo" name = "fo" type="radio" checked><br>						
+							{% else %}
+								<label for="pic">PIC</label><input style="width: 30px;" id ="pic" name = "pic" type="radio">
+								<label for="fo">FO</label><input style="width: 30px;" id ="fo" name = "fo" type="radio"><br>						
+							{% endif %}
+						</td>
+					</tr>
+				</tbody>
+			</table><br>
+	<!--		</form> -->
+		</div>
+		<br>
+
+		<div style="text-align: center;">
+			<label id="msg_password" name="msg_password"></label><br>
+		</div>
+
+		<div class="add_new">
+<!--		<form id="f_change_password" name="f_change_password" action="/settings" method="post"> -->
+			<table class="main_table">
+				<thead>
+					<caption style="text-align: left; font-size:large;"><label>Change password</label><button style="float:right;" type="button" name="pass" id="pass" onclick="change_pass()">Change Password</button></caption>
+				</thead>
+				<tbody>
+					<!-- PIC and FO -->
+					<tr><td style="text-align: center;">
+						<input type="password" placeholder="Old Password" id="old_pass" name="old_pass">		
+						<input type="password" placeholder="New Password" id="new_pass" name="new_pass">		
+						<input type="password" placeholder="Confirm New Password" id="conf_new_pass" name="conf_new_pass">		
+					</td></tr>
+				</tbody>
+			</table>
+<!--		</form> -->
+		</div>
+		<br>
+
+		<div style="text-align: center;">
+			<label id="msg_prevexp" name="msg_prevexp"></label><br>
+		</div>
+		<div>
+			<form id="f_prevexp" name="f_prevexp" action="/settings" method="post">	
+
+			<table class="main_table">
+				<thead>
+					<caption style="text-align: left; font-size:large;"><label>Add previous experience</label><button style="float:right;" id="b_addexp" name="b_addexp" type="button" onclick="add_prevexp()">Add Previous Experience</button></caption>
+				</thead>
+				<tbody>
+					<!-- PIC and FO -->
+					<tr><td>
+							<label>Previous PIC time</label><br>
+							<input oninput="calc_tot_time()" id="pic_time" name="pic_time" type="text" title="HH:MM" placeholder="Previous PIC time" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous FO time</label><br>
+							<input oninput="calc_tot_time()" id="fo_time" name="fo_time" type="text" title="HH:MM" placeholder="Previous FO time" pattern="[0-9]+:[0-9]{2}">		
+						</td><td>
+							<label>Total Previous time</label><br>
+							<input type="text" placeholder="Total Previous time" readonly id ="tot_time" name="tot_time">
+					</td></tr><tr><td>
+					<!-- ME -->
+							<label>Previous ME Turbofan</label><br>
+							<input id="me_fan" name="me_fan" type="text" title="HH:MM" placeholder="Previous ME Jet time" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous ME Turboprop</label><br>
+							<input id="me_prop" name="me_prop" type="text" title="HH:MM" placeholder="Previous ME Prop" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous ME Piston</label><br>
+							<input id="me_pist" name="me_pist" type="text" title="HH:MM" placeholder="Previous ME Piston" pattern="[0-9]+:[0-9]{2}">			
+					</td></tr><tr><td>
+					<!-- SE -->
+							<label>Previous SE Turbofan</label><br>
+							<input id="se_fan" name="se_fan" type="text" title="HH:MM" placeholder="Previous SE Jet" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous SE Turboprop</label><br>
+							<input id="se_prop" name="se_prop" type="text" title="HH:MM" placeholder="Previous SE Prop" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous SE Piston</label><br>
+							<input id="se_pist" name="se_pist" type="text" title="HH:MM" placeholder="Previous SE Piston" pattern="[0-9]+:[0-9]{2}">			
+					</td></tr><tr><td>
+					<!-- IFR/VFR/Night -->
+							<label>Previous IFR time</label><br>
+							<input id="ifr" name="ifr" type="text" title="HH:MM" placeholder="Previous IFR time" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous VFR time</label><br>
+							<input id="vfr" name="vfr" type="text" title="HH:MM" placeholder="Previous VFR time" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous Night time</label><br>
+							<input id="night" name="night" type="text" title="HH:MM" placeholder="Previous Night time" pattern="[0-9]+:[0-9]{2}">			
+					</td></tr><tr><td>
+					<!-- Exam/Instr/DUAL -->
+							<label>Previous Examiner time</label><br>
+							<input oninput="calc_tot_time()" id="exam" name="exam" type="text" title="HH:MM" placeholder="Previous Examiner time" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous Instructor time</label><br>
+							<input oninput="calc_tot_time()" id="instr" name="instr" type="text" title="HH:MM" placeholder="Previous Instructor time" pattern="[0-9]+:[0-9]{2}">			
+						</td><td>
+							<label>Previous DUAL time</label><br>
+							<input oninput="calc_tot_time()" id="dual" name="dual" type="text" title="HH:MM" placeholder="Previous DUAL time" pattern="[0-9]+:[0-9]{2}">			
+					</td></tr>
+				</table>
+				<br>			
+				<input type="text" id="todo" name="todo" value="prevexp" readonly class="invis">
+				<input type="text" id="key" name="key" class="invis">
+			</form>
+		</div>
+	</div>
+
+	<p style="color: darkred;"><small>
+		To add previous experience as a block entry, add relevant times into the fields above. In order to submit the entries, the PIC time, FO time, Instructor time, Examiner time or DUAL (training) time has to be entered. 
+	</small></p>
+
+    <script src="static/settings.js"></script>
+
+{% endblock %}
+

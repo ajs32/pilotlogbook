@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="/static/logbook.ico" rel="icon">
+
+        <title>Logbook: Edit Flight</title>
+		<link rel="stylesheet" href="static/styles.css">
+		
+<!--		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+-->
+
+    </head>
+
+    <body onload="calc_tot_time()">
+		<script>
+		</script>
+
+
+		<div class="main_frame menu_color">
+			<label style="color: #C5CBE3" for="f_edit">{{ msg }}</label>
+		</div>
+		<div class="main_frame main_frame_color">
+
+			<div class="main_info" style="width: 850px;">
+				<form id="f_edit" name="f_edit" action="/editflight" method="post">
+					<table class="main_table" width="100%">
+						<tr>
+							<td><p>Date of flight</p><input id="date" name="date" type="text" placeholder="Date" pattern="[2]{1}[0]{1}[0-9]{2}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}" 
+								title="Date of Flight (YYYY-MM-DD)" value="{{flt_data[0]}}"></td>
+							<td><p>Flight Number</p><input id="flt_nr" name="flt_nr" type="text" placeholder="Flight Number" title="Flight Number" value="{{flt_data[1]}}"></td>
+							<td><p>Aircraft Registration</p><input id="reg" name="reg" type="text" placeholder="Aircraft Registration" title="Aircraft Registration" value="{{flt_data[6]}}"></td>
+							<td><p>Total Flight time</p><input id="tot_time" type="text" placeholder="Total Time" readonly></td>
+						</tr><tr>
+							<td><p>Departure Airport IATA code</p><input id="dep_ap" name="dep_ap" type="text" maxlength='3' placeholder="Departure Airport" title="Departure Airport IATA code" value="{{flt_data[2]}}"></td>
+							<td><p>Departure Date and Time</p><input id="dep_time" name="dep_time" type="text" placeholder="Departure Time" oninput="calc_tot_time()"
+								pattern="[2]{1}[0]{1}[0-9]{2}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1} [0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}:00" 
+								title="Departure Time (YYYY-MM-DD HH:MM:00)" value="{{flt_data[3]}}"></td>
+							<td><p>Arrival Airport IATA code</p><input id="arr_ap" name="arr_ap" type="text" maxlength='3' placeholder="Arrival Airport" title="Arrival Airport IATA code" value="{{flt_data[4]}}"></td>
+							<td><p>Arrival Date and Time</p><input id="arr_time" name="arr_time" type="text" placeholder="Arrival Time" oninput="calc_tot_time()" 
+								pattern="[2]{1}[0]{1}[0-9]{2}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1} [0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}:00" 
+								title="Arrival Time (YYYY-MM-DD HH:MM:00)"value="{{flt_data[5]}}"></td>
+						</tr><tr>
+							<td><p>Pilot-In-Command name</p><input type="text" placeholder="PIC name" id="pic_name" name="pic_name" title="PIC name" value="{{flt_data[7]}}"></td>
+							<td><p>First Officer name</p><input type="text" placeholder="FO name" id="fo_name" name="fo_name" title="FO name" value="{{flt_data[8]}}"></td>
+							{% if flt_data[9] == 'Y' %}
+								<td><label for="pf">PF</label><input style="width: 30px;" id ="pf" name = "pf" type="radio" checked>
+								<label for="pm">PM</label><input style="width: 30px;" id ="pm" name = "pm" type="radio"></td>
+							{% else %}
+								<td><label for="pf">PF</label><input style="width: 30px;" id ="pf" name = "pf" type="radio">
+								<label for="pm">PM</label><input style="width: 30px;" id ="pm" name = "pm" type="radio" checked></td>
+							{% endif %}
+						</tr><tr>
+							<td><p>Additional Crew name</p><input name="crew3_name" type="text" placeholder="Crew 3" id="pilot3" name="pilot3" title="Crew 3 name" value="{{flt_data[10]}}"></td>
+							<td><p>Additional Crew name</p><input name="crew4_name" type="text" placeholder="Crew 4" id="pilot4" name="pilot4" title="Crew 4 name" value="{{flt_data[11]}}"></td>
+							<td><p>Additional Crew name</p><input name="crew5_name" type="text" placeholder="Crew 5" id="pilot5" name="pilot5" title="Crew 5 name" value="{{flt_data[12]}}"></td>
+						</tr><tr>
+							<td><p>PIC time</p><input type="text" placeholder="PIC time" id="pic_time" name="pic_time" title="PIC (HH:MM)" value="{{flt_data[13]}}"></td>
+							<td><p>FO time</p><input type="text" placeholder="FO time" id="fo_time" name="fo_time" title="FO (HH:MM)" value="{{flt_data[14]}}"></td>
+							<td><p>Night time</p><input type="text" placeholder="Night time" id="night" name="night" title="Night (HH:MM)" value="{{flt_data[18]}}"></td>
+							<td><p>IFR time</p><input type="text" placeholder="IFR" id="ifr" name="ifr" title="IFR (HH:MM)" value="{{flt_data[19]}}"></td>
+						</tr>
+						</tr><tr>
+							<td><p>Examiner time</p><input type="text" placeholder="Examiner time" id="exam" name="exam" title="Examiner (HH:MM)" value="{{flt_data[17]}}"></td>
+							<td><p>Instructor time</p><input type="text" placeholder="Instructor time" id="instr" name="instr" title="Instructor (HH:MM)" value="{{flt_data[16]}}"></td>
+							<td><p>DUAL (training) time</p><input type="text" placeholder="DUAL" id="dual" name="dual" title="DUAL (HH:MM)" value="{{flt_data[15]}}"></td>
+							<td><p>VFR time</p><input type="text" placeholder="VFR" id="vfr" name="vfr" title="VFR (HH:MM)" value="{{flt_data[20]}}"></td>
+						</tr><tr>
+	<!--						<td><p>Flight Remarks</p><input type="text" style="width: 318px;" maxlength='45' title="Flight Remarks max length 45 characters" placeholder="Flight Remarks" id="remarks" name="remarks"></td> -->
+						</tr>
+					</table>
+				
+						<input type="text" id="flt_id" name="flt_id" style="visibility: hidden;" value="{{ flt_id }}">
+						<input type="text" id="todo" name="todo" style="visibility: hidden;">
+						<input type="text" id="tot_minutes" name="tot_time" style="visibility: hidden;">
+					<br>
+
+			<script  src="static/editflight.js"></script>
+
+					{% if flt_data[1] == "PREVEXP" %}
+						<button id="b_save" name="b_save" type="button" onclick="save_flt()" disabled>Save Changes</button>
+					{% else%}
+						<button id="b_save" name="b_save" type="button" onclick="save_flt()">Save Changes</button>
+					{% endif %}	
+					<a href="/"><button id="b_cancel" name="b_cancel" type="button">Go Back</button></a>
+					<button id="b_del" name="b_del" type="button" onclick="del_flt()">Delete Flight</button>
+
+				</form>
+			</div>
+
+			
+			{% if flt_data[1] == "PREVEXP" %}
+				<p style="color: darkred;"><small>The previous experience (PREVEXP) entries cannot be edited and can only be deleted.</small></p>
+			{% endif %}
+
+		</div>
+<!--	<button type="button" onclick="test_func()">Test</button> -->
+	</body>
+</html>

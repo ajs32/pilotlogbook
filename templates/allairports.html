@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="/static/logbook.ico" rel="icon">
+
+        <title>Logbook: All Airports</title>
+		<link rel="stylesheet" href="static/styles.css">
+
+    </head>
+
+    <body>
+		<script>
+		</script>
+
+
+<!--		<div style="width: 810px; margin: auto; background-color: lightblue; padding: 5px;">
+-->
+		<div class="menu_color">
+			<br>
+			<label style="color: #C5CBE3">{{ msg }}</label>
+		</div>
+<!--		<div style="width: 810px; margin: auto; background-color: lightyellow; padding: 5px;">
+-->
+		<div class="main_frame_color">
+
+<!--			<i style="color: darkred;"><small>The block entries of Previous Experience are marked as PREVEXP and dated 1970-01-01.<br>These entries cannot be edited and can only be deleted.</small></i> -->
+		<br>
+
+			{% if ap_list %}
+				<table id="t_aps" name="t_aps">
+					<tr>
+						<th>Airport Name</th><th>IATA code</th><th>ICAO code</th><th>City</th><th>Country</th>
+					</tr>
+						{% for apt in ap_list %}
+							<tr>
+								<!-- Airport Name -->
+								<td title="Date">{{ apt[0] }}</td>
+
+								<!-- IATA code -->
+								<td>{{ apt[1] }}</td>
+
+								<!-- ICAO code -->
+								<td>{{ apt[2] }}</td>
+
+								<!-- City -->
+								<td>{{ apt[3] }}</td>
+
+								<!-- Country -->
+								<td>{{ apt[4] }}</td>
+							</tr>
+						{% endfor %}
+				</table>
+			{% else %}
+				<p style="color: red">No data available</p>
+			{% endif %}
+		</div>
+
+<!--    <script  src="static/allflights.js"></script> -->
+	</body>
+</html>

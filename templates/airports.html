@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Airports
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="static/pages.css">
+{% endblock %}
+
+{% block main %}
+
+	{% if ap_list %}
+<!-- AIRPORTS REQUIRE UPDATE -->
+		<div class="add_new">
+			<form name="f_updap" id="f_updap" action="/airports" method="post">
+				<table class="main_table">
+					<thead>
+						<caption style="text-align: center; font-size:large;"><label name="msg_update" id="msg_update" style="color: red;">Airport information update required</label></caption>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+				<!-- id HTML, name JAVASCRIPT -->
+	<!-- FIELDS FOR UPDATING INFO -->
+
+								<input type="text" title="Airport IATA code" minlenght='3' maxlength='3' placeholder="Airport IATA code" style="width: 110px;" name="upd_iata" id="upd_iata">
+								<input type="text" title="Airport ICAO code" minlenght='4' maxlength='4' placeholder="Airport ICAO code" style="width: 110px;" name="upd_icao" id="upd_icao">
+								<input type="text" title="Airport Name" placeholder="Airports name" name="upd_name" id="upd_name">
+								<input type="text" title="City" placeholder="City" name="upd_city" id="upd_city">
+								<input type="text" title="Country" placeholder="Country" name="upd_country" id="upd_country"><br><br>
+
+								<button id="b_update" name="b_update" type="button" onclick="update_airport()" disabled>Update Airport</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<input type="text" id="ap_id" name="ap_id" style="visibility: hidden">
+				<input type="text" id="todo" name="todo" style="visibility: hidden">
+			</form>
+		</div>
+
+<!-- LIST OF AIRPORTS REQUIRE UPDATE -->
+		<div class="main_info height500">
+			<table class="main_table">
+				<tr>
+					<th>Airport Name</th><th>Airport IATA code</th><th>Airport ICAO code</th><th>City</th><th>Country</th>
+				</tr>
+
+				{% for i in range(length) %}
+					{% if ap_list[i][1] != "XXX" %}
+						<tr id="row{{i}}" name="row{{i}}" title="Press to display and update airport info"
+							onmouseover="col_selected({{ i }});" onmouseleave="col_norm({{ i }})"  onclick="get_ap_info({{ ap_list[i][5] }})">
+							<td>{{ ap_list[i][0] }}</td>
+							<td>{{ ap_list[i][1] }}</td>
+							<td>{{ ap_list[i][2] }}</td>
+							<td>{{ ap_list[i][3] }}</td>
+							<td>{{ ap_list[i][4] }}</td>
+<!--							<td><button name="b_edit{{ i }}" id="b_edit{{ i }}" class="edit_button" type="button">edit</button></td>
+-->
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+			<br><br>
+		</div>		
+	{% endif %}
+
+
+
+<!-- AIRPORTS LOOKUP -->
+	<div style="text-align: center;">
+		{% if col == "red"%}
+			<label id="msg_lookup" name="msg_lookup" style="color: red;">{{ msg }}</label><br>
+		{% else %}
+			<label id="msg_lookup" name="msg_lookup" style="color: green;">{{ msg }}</label><br>
+		{% endif %}
+	</div>
+	
+
+	<div class="add_new">
+		<table class="main_table">
+			<thead>
+				<caption style="text-align: left; font-size:large;"><label>Airport Lookup</label><a href="/allairports" target="_blank" style="float: right;"><label>(Display full list of airports)</label></a></caption>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+		<!-- id HTML, name JAVASCRIPT -->
+						<input type="text" title="Airport IATA code" minlenght='3' maxlength='3' placeholder="Airport IATA code" id="iata" name="iata" style="width: 110px;" autofocus>
+						<input type="text" title="Airport ICAO code" minlenght='4' maxlength='4' placeholder="Airport ICAO code" id="icao" name="icao" style="width: 110px;">
+						<input type="text" title="Airport Name" placeholder="Airports name" id="name" name="name">
+						<input type="text" title="City" placeholder="City" id="city" name="city">
+						<input type="text" title="Country" placeholder="Country" id="country" name="country"><br><br>
+
+						<button id="b_lookup" name="b_lookup" type="button" onclick="lookup()">Find Airport</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<br>
+
+	<div id="ap_info" name="ap_info" class="main_info">
+		<table class="main_table">
+			<thead>
+				<caption style="text-align: left; font-size:large;"><label>Airport information</label></caption>
+			</thead>
+			<tbody>
+			<tr>
+				<th style="width: 150px;">Airport name</th><td name="lookup_name" id="lookup_name">-</td>
+			</tr><tr>
+				<th>Airport IATA code</th><td name="lookup_iata" id="lookup_iata">-</td>
+			</tr><tr>
+				<th>Airport ICAO code</th><td name="lookup_icao" id="lookup_icao">-</td>
+			</tr><tr>
+				<th>City</th><td name="lookup_city" id="lookup_city">-</td>
+			</tr><tr>
+				<th>Country</th><td name="lookup_country" id="lookup_country">-</td>
+			</tr>
+		</table>
+	</div>
+
+    <script  src="static/airports.js"></script>
+
+{% endblock %}
+

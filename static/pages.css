@@ -1,0 +1,30 @@
+td
+{
+	padding: 3px;
+	border-bottom: 1px solid grey;
+}
+
+.add_new
+{
+	text-align: center;
+}
+
+.main_info
+{
+	max-width: 1240px; 
+	overflow-x: auto; 
+	margin: auto; 
+	padding-left: 20px; 
+	padding-right: 20px;
+}
+
+.max500
+{
+	max-height: 500px; 
+}
+
+.min500
+{
+	min-height: 500px; 
+}
+

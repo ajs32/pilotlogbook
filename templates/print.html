@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Print Logbook
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="static/print.css">
+{% endblock %}
+
+{% block main %}
+
+<!-- AIRPORTS LOOKUP -->
+	<div style="text-align: center;">
+		{% if col == "red"%}
+			<label id="msg_logbook" name="msg_logbook" style="color: red;">{{ msg }}</label><br>
+		{% else %}
+			<label id="msg_logbook" name="msg_logbook" style="color: green;">{{ msg }}</label><br>
+		{% endif %}
+	</div>
+
+	<div class="add_new">
+		<div style="text-align: center; color: green; height: 20px;">
+			<label id="pages" name="pages"></label><label id="nr_pages" name="nr_pages"></label>
+		</div>	
+		<table class="main_table">
+			<thead>
+				<caption style="text-align: left; font-size:large;"><label>Generate and print Logbook</label></caption> 
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td_noborder">
+		<!-- id HTML, name JAVASCRIPT -->
+						<button type="button" id="b_print" name="b_print" disabled onclick="pdf()">Print Logbook</button>
+						<button type="button" onclick="req_logbook()">Generate Template</button>
+						<a href="/"><button type="button">Cancel</button></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div name="sheets" id="sheets">
+	</div>
+
+	<div id="cover"><p>Please wait, loading...</p></div>
+	
+	<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+    <script src="static/print.js"></script>
+
+{% endblock %}
+

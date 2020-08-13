@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Totals
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="static/pages.css">
+{% endblock %}
+
+{% block main %}
+	<div style="text-align: center;">
+		<label>{{ msg }}</label><br>
+	</div>
+
+	<div class="main_info">
+		<!-- TOTAL FLT TIME-->
+		<div>
+			<table class="main_table">
+			{% if flt_data %}
+				<thead>
+					<caption style="text-align: left; font-size:large;"><label>Flight Time Totals</label></caption>
+					<tr><th>Total Time</th><th>PIC time</th><th>FO time</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>{{ flt_data[0] }}</td><td>{{ flt_data[1] }}</td><td>{{ flt_data[2] }}</td></tr>
+					<tr><th>ME Turbofan</th><th>ME Turboprop</th><th>ME Piston</th></tr>
+					<tr><td>{{ flt_data[9] }}</td><td>{{ flt_data[10] }}</td><td>{{ flt_data[11] }}</td></tr>
+					<tr><th>SE Turbofan</th><th>SE Turboprop</th><th>SE Piston</th></tr>
+					<tr><td>{{ flt_data[12] }}</td><td>{{ flt_data[13] }}</td><td>{{ flt_data[14] }}</td></tr>
+					<tr><th>IFR</th><th>VFR</th><th>Night</th></tr>
+					<tr><td>{{ flt_data[3] }}</td><td>{{ flt_data[4] }}</td><td>{{ flt_data[5] }}</td></tr>
+					<tr><th>Examiner</th><th>Instructor</th><th>DUAL</th></tr>
+					<tr><td>{{ flt_data[6] }}</td><td>{{ flt_data[7] }}</td><td>{{ flt_data[8] }}</td></tr>
+				<tbody>
+			{% else %}
+				<tr><td>No Information</td></tr>
+			{% endif %}
+			</table><br>
+		</div>
+		<!-- TOTAL FLT TIME ON TYPES-->
+		<div>
+			<table class="main_table">
+			{% if type_data %}
+				<thead>
+					<caption style="text-align: left; font-size:large;"><label>Flight Time on types</label></caption>
+					<tr><th>Aircraft type</th><th>Total time</th><th>PIC time</th><th>FO time</th></tr>
+				</thead>
+				<tbody>
+					{% for data in type_data %}
+						{% if data[0] != "XXXXXXXXXX" %}
+							<tr><td>{{ data[0] }}</td><td>{{ data[1] }}</td><td>{{ data[2] }}</td><td>{{ data[3] }}</td></tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			{% else %}
+				<tr><td><p style="color: red">No Information found</p></td></tr>
+			{% endif %}
+			</table><br>
+		</div>
+		<!-- FLT TIME IN PERIODS and LANDING CURRENCY-->
+		<div>
+			<table class="main_table">
+			{% if cur_data %}
+				<thead>
+					<caption style="text-align: left; font-size:large;"><label>Landing Currency and Accumulated Flight Time</label></caption>
+					<tr><th>Flight time 30 days</th><th>Flight time 90 days</th><th>Flight time 6 months</th><th>Flight time 1 year</th></tr>
+				</thead>
+				<tbody>				
+					<tr><td>{{ cur_data[1] }}</td><td>{{ cur_data[2] }}</td><td>{{ cur_data[3] }}</td><td>{{ cur_data[4] }}</td></tr>
+					<tr><th>Landing Currency is valid until:</th><tr></tr><td id="land_cur" name="land_cur"></td></tr>
+				</tbody>
+			{% else %}
+				<tr><td><p style="color: red">No Information found</p></td></tr>
+			{% endif %}
+			</table>
+		</div>
+	</div>
+
+	{% if cur_data %}
+<!--	    <script onload="land_curr({{ land_date }})" src="static/totals.js"></script> -->
+	    <script onload="land_curr('{{ cur_data[0] }}')" src="static/totals.js"></script>
+	{% else %}
+	    <script src="static/totals.js"></script>
+	{% endif %}
+
+{{ test_data }}
+{% endblock %}
+

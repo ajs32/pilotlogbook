@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Register
+{% endblock %}
+
+
+{% block main %}
+
+<div class="login-register">
+	<form id="f_reg" name="f_reg" action="/register" method="post">
+		<img src="static/banner.jpg" align="center"><br><br>
+		<label style="color: red;">{{ msg }}</label><br>		
+		<div style="padding: 2px;">
+			<input type="text" placeholder="Username" title="Username" id="username" name="username" title="Enter Username" autofocus><br>
+		</div>
+		<div style="padding: 2px;">
+			<input type="password" placeholder="Password" title="Password" id="password" name="password" title="Enter Password"><br>
+		</div>
+		<div style="padding: 2px;">
+			<input type="password" placeholder="Confirm Password" title="Confirm Password" id="conf_password" name="conf_password" title="Confirm Password"><br>
+		</div>
+		<div style="padding: 2px;">
+			<button type="submit" style="width: 162px;">Register new user</button>
+		</div>
+	</form>
+</div>
+
+{% endblock %}
+

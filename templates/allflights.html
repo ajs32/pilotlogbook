@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="/static/logbook.ico" rel="icon">
+
+        <title>Logbook: All Flights</title>
+		<link rel="stylesheet" href="static/styles.css">
+
+    </head>
+
+    <body>
+		<script>
+		</script>
+
+
+<!--		<div style="width: 810px; margin: auto; background-color: lightblue; padding: 5px;">
+-->
+		<div class="menu_color main_frame">
+			<label style="color: #C5CBE3" for="f_edit" name="msg" id="msg">{{ msg }}</label>
+		</div>
+<!--		<div style="width: 810px; margin: auto; background-color: lightyellow; padding: 5px;">
+-->
+		<div class="main_frame_color main_frame">
+
+			<form id="f_edit" name="f_edit" action="/allflights" method="post">
+				<i style="color: darkred;"><small>The block entries of Previous Experience are marked as PREVEXP and dated 1970-01-01.<br>These entries cannot be edited and can only be deleted.</small></i>
+
+				<!-- EXPORT LOGBOOK BUTTON -->
+				<button type="button" style="float:right;" onclick="export_log()">Export Logbook</button>
+
+				<input type="text" id="flt_id" name="flt_id" style="visibility: hidden;">
+
+				<table id="t_flts" name="t_flts">
+					<tr>
+						<th>Date of Flight</th><th>Flight Number</th><th>Dep Airport</th><th>Arr Airport</th>
+						<th>Airplane Registration</th><th>Flight Time</th><th>Pilot In Command</th><th>First Officer</th><th>Flight Remarks</th><th>PF</th>
+					</tr>
+					{% if flt_data %}
+						{% for i in range(length) %}
+							<tr id="row{{i}}" name="row{{i}}"
+								onmouseover="col_selected({{ i }});" onmouseleave="col_norm({{ i }})"  onclick="set_id({{ flt_data[i][8] }})">
+
+								<!-- Date -->
+								<td title="Date">{{ flt_data[i][0] }}</td>
+
+								<!-- FLT Number, edit flights -->
+								<td title="Full Flight Info/Edit/Delete Flight" id="flt{{i}}" name="flt{{i}}">{{ flt_data[i][1] }}</td>
+
+								<!-- Dep airport -->
+								{% if flt_data[i][11] == "XXXXXXXXXX" or flt_data[i][12] == "XXXXXXXXXX" or flt_data[i][13] == "XXXXXXXXXX" %}
+									<td title="Dep Airport/UPDATE DATA ON AIRPORT PAGE">{{ flt_data[i][2] }}</td>
+								{% else %}
+									<td title="{{flt_data[i][11] }}, {{ flt_data[i][12] }}, {{ flt_data[i][13] }}">{{ flt_data[i][2] }}</td>
+								{% endif %}
+
+								<!-- Arr airport -->
+								{% if flt_data[i][14] == "XXXXXXXXXX" or flt_data[i][15] == "XXXXXXXXXX" or flt_data[i][16] == "XXXXXXXXXX" %}
+									<td title="Arr Airport/UPDATE DATA ON AIRPORT PAGE">{{ flt_data[i][3] }}</td>
+								{% else %}
+									<td  title="{{flt_data[i][14] }}, {{ flt_data[i][15] }}, {{ flt_data[i][16] }}">{{ flt_data[i][3] }}</td>
+								{% endif %}
+
+								<!-- Aircraft -->
+								{% if flt_data[i][17] == "XXXXXXXXXX" or flt_data[i][17] == "None" or flt_data[i][18] == "XXXXXXXXXX" or flt_data[i][18] == "None" %}
+									<td title="Aircraft/UPDATE DATA ON PLANES PAGE">{{ flt_data[i][4] }}</td>
+								{% else %}	
+									<td title="{{ flt_data[i][17] }}{%if flt_data[i][18] != '' %}-{{flt_data[i][18]}}{% endif %}">{{ flt_data[i][4] }}</td>
+								{% endif %}
+
+								<!-- Total flt time -->
+								<td title="Total Flight Time">{{ flt_data[i][5] }}</td>
+								<!-- PIC name -->
+								<td title="Pilot-In-Command">{{ flt_data[i][6] }}</td>
+								<!-- FO name -->
+								<td title="FO">{{ flt_data[i][9] }}</td>
+								<!-- Remarks -->
+								<td title="Remarks">{{ flt_data[i][10] }}</td>
+								<!-- PM/PF -->
+								<td title="PF/PM">{{ flt_data[i][7] }}</td>
+<!--								<td><button name="b_edit{{ i }}" id="b_edit{{ i }}" class="edit_button" type="button" onclick="set_id({{ flt_data[i][8] }})">edit</button></td> -->
+							</tr>
+						{% endfor %}
+					{% else %}
+						<tr><td><p style="color: red">No data available</p></td></tr>
+					{% endif %}
+				</table>
+			</form>
+		</div>
+<!--		<div id="dvTable" name="dvTable">
+			Test DIV
+		</div> -->
+	<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>	
+<!--	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+-->    <script  src="static/allflights.js"></script>
+	</body>
+</html>

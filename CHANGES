@@ -1,0 +1,58 @@
+Version 1.2
+	logbook printout
+	secure submition
+	portal redesign
+
+
+Version 1.1
+	Version file and version displayed on the page
+
+	Contact email
+
+	Metadata description
+
+	Register button next to Login button
+
+	user tables. Add DELETED column
+		ALTER TABLE ... ADD deleted CHAR(1) DEFAULT N;
+	Soft delete
+
+	Delete flt with confirmation
+
+	Unable to set PIC and FO time for same flt
+	Unable to set IFR and VFR time for same flt
+
+	"No data available" for new users with empty database
+
+	"Error with Date/time" error RED color
+
+	Database error protection and error reporting
+
+	Settings for Pilot's name and Role (PIC/FO)
+
+	Autolog Name and Role on Flights
+
+	Flight Remarks 
+
+	Edit button removed from lists
+	Flight, pilot and plane edit and info by clicking onto the row
+	Airports and Planes info as popup
+
+	Edit flight page, fields captions added
+
+	Totals
+		Flight time on types
+		Accumulated time
+		Landing currency
+
+	Airport Database implemented
+		ALTER TABLE AIRPORTS
+		Import airports from CSV
+
+	Airports page redesigned
+		Airports lookup
+		display full database
+
+
+Version 1.0
+	Basic logbook functions

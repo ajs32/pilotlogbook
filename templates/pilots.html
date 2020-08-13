@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Pilots
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="static/pages.css">
+{% endblock %}
+
+{% block main %}
+	<div style="text-align: center;">
+		{% if col == "red"%}
+			<label name="pil_msg" id="pil_msg" style="color: red;">{{ msg }}</label><br>
+		{% else %}
+			<label name="pil_msg" id="pil_msg" style="color: green;">{{ msg }}</label><br>
+		{% endif %}
+	</div>
+
+	<form id="f_addpil" name="f_addpil" action="/pilots" method="post">
+		<div class="add_new">
+			{% if pilot_data %}
+				<table class="main_table">
+					<thead>
+						<caption style="text-align: left; font-size:large;"><label>{{ lbl }}</label></caption>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+			<!-- id HTML, name JAVASCRIPT -->
+								<input type="text" value = "{{ pilot_data[2] }}" title="Pilot's Name" placeholder="Pilot name" id="name" name="name">
+								<input type="text" maxlength='10' value="{{ pilot_data[1] }}" title="Pilot's Company ID (Optional)" placeholder="Pilot company ID" id="staff_nr" name="staff_nr">
+								<input type="text" value = "{{ pilot_data[3] }}" title="Pilot's Email address (Optional)" placeholder="Email address" id="email" name="email">
+								<input type="text" value = "{{ pilot_data[4] }}" title="Pilot's Phone number (Optional)" placeholder="Phone number" id="phone" name="phone">
+								<button id="b_addpil" name="b_addpil" type="button" onclick="update_pilot()">Update Info</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			{% else %}
+				<table class="main_table">
+					<thead>
+						<caption style="text-align: left; font-size:large;"><label>{{ lbl }}</label></caption>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+			<!-- id HTML, name JAVASCRIPT -->
+								<input type="text" title="Pilot's Name" placeholder="Pilot name" id="name" name="name">
+								<input type="text" maxlength='10' title="Pilot's Company ID (Optional)" placeholder="Pilot company ID" id="staff_nr" name="staff_nr">
+								<input type="email" title="Pilot's Email address (Optional)" placeholder="Email address" id="email" name="email">
+								<input type="text" title="Pilot's Phone number (Optional)" placeholder="Phone number" id="phone" name="phone">
+								<button id="b_addpil" name="b_addpil" type="button" onclick="add_pilot()">Add New Pilot</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+
+		<div class="main_info">
+
+			{% if pilot_data %}
+				<input type="text" id="pil_id" name="pil_id" class="invis" value="{{ pilot_data[0] }}">
+			{% else %}
+				<input type="text" id="pil_id" name="pil_id" class="invis">
+			{% endif %}
+			<input type="text" id="todo" name="todo" class="invis">
+			<input type="text" id="key" name="key" class="invis">
+
+			<table class="main_table">
+				<thead>
+					<caption style="text-align: left; font-size:large;"><label>Pilots List</label></caption>
+					<tr>
+						<th>Pilot Name</th><th>Company ID</th><th>EMail</th><th>Phone Number</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if pilot_list %}
+						{% for i in range(length) %}
+							{% if pilot_list[i][0] != "XXX" and pilot_list[i][0] != "Xxx"%}
+
+								<tr id="row{{i}}" name="row{{i}}"
+										onmouseover="col_selected({{ i }});" onmouseleave="col_norm({{ i }})"  onclick="set_id({{ pilot_list[i][4] }})">
+
+									<td>{{ pilot_list[i][0] }}</td><td>{{ pilot_list[i][1] }}</td><td>{{ pilot_list[i][2] }}</td><td>{{ pilot_list[i][3] }}</td>
+		<!--							<td><button name="b_edit{{ i }}" id="b_edit{{ i }}" class="edit_button" type="button" onclick="set_id({{ pilot_list[i][4] }})">edit</button></td> -->
+								</tr>
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						<tr><td><p style="color: red">No data available</p></td></tr>
+					{% endif %}
+				</tbody>
+			</table>
+		</div>
+	</form>
+    <script  src="static/pilots.js"></script>
+
+{% endblock %}
+

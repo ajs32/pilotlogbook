@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Flights
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="static/pages.css">
+{% endblock %}
+
+{% block main %}
+    <script>
+	</script>
+
+	<div style="text-align: center;">
+		{% if col == "red"%}
+			<label style="color: red;">{{ msg }}</label><br>
+		{% else %}
+			<label style="color: green;">{{ msg }}</label><br>
+		{% endif %}
+	</div>
+
+	<div class="main_info max500">
+		<form id="f_edit" name="f_edit" action="/editflight" method="post">
+			<i style="color: darkred;"><small>The block entries of Previous Experience are marked as PREVEXP and dated 1970-01-01.<br>These entries cannot be edited and can only be deleted.</small></i>
+			<a href="/print"><label style="float: right; color: blue; font-weight: bold;" id="print" name="print" onmouseover="print_selected()" onmouseleave="print_norm()">Print the Logbook</label></a>
+			<input type="text" id="flt_id" name="flt_id" class="invis"> 
+		</form>
+
+			
+		<!-- FORM FOR EDIT FLT -->
+
+
+		<table id="t_flts" name="t_flts" class="main_table">
+			<!-- FLIGHT TABLE HEADINGS-->
+			<thead>
+				<tr>
+					<th style="padding:4px;">Date of Flight</th><th style="padding:4px;">Flight Number</th><th style="padding:4px;">Dep Airport</th><th style="padding:4px;">Arr Airport</th><th style="padding:4px;">Airplane Registration</th><th style="padding:4px;">Flight Time</th><th style="padding:4px;">Pilot In Command</th><th style="padding:4px;">First Officer</th><th style="padding:4px;">PF</th><th style="padding:4px;">Remarks</th>
+				</tr>
+			</thead>
+			<!-- FLIGHT TABLE -->
+			<tbody>
+				{% if flt_data %}
+					{% for i in range(length) %}
+							<tr id="row{{i}}" name="row{{i}}"
+								onmouseover="col_selected({{ i }})" onmouseleave="col_norm({{ i }})"  onclick="set_id({{ flt_data[i][8] }})">
+								<!-- Date -->
+								<td title="Date">{{ flt_data[i][0] }}</td>
+								<!-- FLT Number, edit flights -->
+								<td title="Full Flight Info/Edit/Delete Flight" id="flt{{i}}" name="flt{{i}}">{{ flt_data[i][1] }}</td>
+								<!-- Dep airport -->
+								{% if flt_data[i][11] == "XXXXXXXXXX" or flt_data[i][12] == "XXXXXXXXXX" or flt_data[i][13] == "XXXXXXXXXX" %}
+									<td title="Dep Airport/UPDATE DATA ON AIRPORT PAGE">{{ flt_data[i][2] }}</td>
+								{% else %}
+									<td title="{{flt_data[i][11] }}, {{ flt_data[i][12] }}, {{ flt_data[i][13] }}">{{ flt_data[i][2] }}</td>
+								{% endif %}
+								<!-- Arr airport -->
+								{% if flt_data[i][14] == "XXXXXXXXXX" or flt_data[i][15] == "XXXXXXXXXX" or flt_data[i][16] == "XXXXXXXXXX" %}
+									<td title="Arr Airport/UPDATE DATA ON AIRPORT PAGE">{{ flt_data[i][3] }}</td>
+								{% else %}
+									<td  title="{{flt_data[i][14] }}, {{ flt_data[i][15] }}, {{ flt_data[i][16] }}">{{ flt_data[i][3] }}</td>
+								{% endif %}
+								<!-- Aircraft -->
+								{% if flt_data[i][17] == "XXXXXXXXXX" or flt_data[i][17] == "None" or flt_data[i][18] == "XXXXXXXXXX" or flt_data[i][18] == "None" %}
+									<td title="Aircraft/UPDATE DATA ON PLANES PAGE">{{ flt_data[i][4] }}</td>
+								{% else %}	
+									<td title="{{ flt_data[i][17] }}{%if flt_data[i][18] != '' %}-{{flt_data[i][18]}}{% endif %}">{{ flt_data[i][4] }}</td>
+								{% endif %}
+								<!-- Total flt time -->
+								<td title="Total Flight Time">{{ flt_data[i][5] }}</td>
+								<!-- PIC name -->
+								<td title="Pilot-In-Command">{{ flt_data[i][6] }}</td>
+								<!-- FO name -->
+								<td title="FO">{{ flt_data[i][9] }}</td>
+								<!-- PM/PF -->
+								<td title="PF/PM">{{ flt_data[i][7] }}</td>
+								<!-- Remarks -->
+								<td title="Remarks">{{ flt_data[i][10] }}</td>
+							</tr>
+					{% endfor %}
+
+				{% else %}
+					<tr><td><p style="color: red">No data available</p></td></tr>
+				{% endif %}
+			</tbody>
+
+
+	<!--		<tfoot>
+				<tr><td>Test</td></tr>
+			</tfoot>
+	-->
+		</table>
+	</div>
+
+		<br>
+		<!-- MESSAGE -->
+		<div style="text-align: center;">
+			<label id="flt_msg" name="flt_msg" style="color: green;"></label><br>
+		</div>
+
+
+
+
+		<div style="margin:auto; width: 810px;">
+				<!-- ADD FLT FORM -->
+			<form id="f_addflt" name="f_addflt" action="/" method="post">
+				<table class="main_table">
+					<thead>
+						<caption style="text-align: left; font-size:large;"><label>Add new flight</label></caption>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<!-- FLT NR -->
+								<input type="text" title="Flight Number" placeholder="Flight Number" id="flt_nr" name="flt_nr"><br>
+								<!-- DEP data -->
+								<input type="text" minlength='3' maxlength='3' title="IATA code Departure airport" placeholder="IATA code DEP" id="dep_ap" name="dep_ap">
+								<input type="date" title="Departure Date" id="dep_date" name="dep_date" oninput="calc_tot_time()">
+								<input type="time" title="Departure Time UTC" id="dep_time" name="dep_time" oninput="calc_tot_time()"><br>
+								<!-- ARR data -->
+								<input type="text" minlength='3' maxlength='3' title="IATA code Arrival airport" placeholder="IATA code ARR" id="arr_ap" name="arr_ap">
+								<input type="date" title="Arrival Date" id="arr_date" name="arr_date" oninput="calc_tot_time()">
+								<input type="time" title="Arrival Time UTC" id="arr_time" name="arr_time" oninput="set_arr_date()"><br>
+								<!-- Aircraft -->
+								<input type="text" maxlength='8' title="Aircraft Registration" placeholder="Aircraft Registration" id="reg" name="reg"><br>
+								<!-- Crew data and duty -->
+								<input type="text" title="Name of Pilot-In-Command" placeholder="PIC name" id="pic_name" name="pic_name">
+								<input type="text" title="Name of First Officer" placeholder="FO name" id="fo_name" name="fo_name">
+								<label for="pf">PF</label><input style="width: 30px;" id ="pf" name = "pf" checked type="radio">
+								<label for="pm">PM</label><input style="width: 30px;" id ="pm" name = "pm" type="radio"><br>
+<!--								<input style="width: 30px;" id ="pf" name = "pf" checked type="radio">PF
+								<input style="width: 30px;" id ="pm" name = "pm" type="radio">PM<br>
+-->								<input type="text" title="Name of Extra Crew Member" placeholder="Crew 3" id="pilot3" name="pilot3">
+								<input type="text" title="Name of Extra Crew Member" placeholder="Crew 4" id="pilot4" name="pilot4">
+								<input type="text" title="Name of Extra Crew Member" placeholder="Crew 5" id="pilot5" name="pilot5"><br>
+								<!-- total time -->
+								<input type="text" placeholder="Total time" readonly id="tot_time">
+								<!-- Flight remarks -->
+								<input type="text" style="width: 318px;" maxlength='20' title="Flight Remarks max length 20 characters" placeholder="Flight Remarks" id="remarks" name="remarks"><br>
+								<!-- Add Flight Button -->
+								<button id="b_addflt" name="b_addflt" type="button">Add New Flight</button>
+								<!-- Submit settings -->
+								<input type="text" id="tot_minutes" name="tot_time" class="invis">
+								<input type="text" id="todo" name="todo" value="add_flt" class="invis">
+								<input type="text" id="key" name="key" class="invis">
+							</td><td>
+								<!-- Time data -->
+								<input type="text" maxlength='5' placeholder="PIC time" title="HH:MM PIC time" id="pic_time" name="pic_time"><br>
+								<input type="text" maxlength='5' placeholder="FO time" title="HH:MM FO time" id="fo_time" name="fo_time"><br>
+								<input type="text" maxlength='5' placeholder="DUAL" title="HH:MM DUAL" id="dual_time" name="dual_time"><br>
+								<input type="text" maxlength='5' placeholder="Instructor" title="HH:MM Instructor" id="instr_time" name="instr_time"><br>
+								<input type="text" maxlength='5' placeholder="Examiner" title="HH:MM Examiner" id="exam_time" name="exam_time"><br>
+								<input type="text" maxlength='5' placeholder="Night" title="HH:MM Night" id="night_time" name="night_time"><br>
+								<input type="text" maxlength='5' placeholder="IFR" title="HH:MM IFR" id="ifr_time" name="ifr_time"><br>
+								<input type="text" maxlength='5' placeholder="VFR" title="HH:MM VFR" id="vfr_time" name="vfr_time"><br>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+
+
+    <script  src="static/flights.js"></script>
+
+{% endblock %}
+

@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Log In
+{% endblock %}
+
+
+{% block main %}
+
+<div class="login-register">
+	<form id="f_login" name="f_login" action="/login" method="post">
+
+		<img src="static/banner.jpg" align="center"><br><br>
+
+		{% if col == "red"%}
+			<label style="color: red;">{{ msg }}</label><br>
+		{% else %}
+			<label style="color: green;">{{ msg }}</label><br>
+		{% endif %}
+		<div style="padding: 2px;">
+			<input type="text" placeholder="Username" title="Username" id="username" name="username" autofocus><br>
+		</div>
+		<div style="padding: 2px;">
+			<input type="password" placeholder="Password" title="Password" id="password" name="password"><br>
+		</div>
+		<div style="padding-top: 31px; padding-bottom: 2px;">
+			<button style="width: 80px; text-align: center; padding: 1px;" type="submit">Log in</button>
+			<a href="/register"><button style="width: 80px; text-align: center; padding: 1px;" type="button">Register</button></a>
+		</div>
+	</form>
+</div>
+{% endblock %}
+

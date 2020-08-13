@@ -1,0 +1,120 @@
+
+button
+{
+	font-weight: bold;
+	width: 200px;
+}
+
+input
+{
+	width: 152px;
+	height: 17px;
+}
+
+label
+{
+	padding-bottom: 3px;
+	font-size: normal !important;
+}
+
+.nav_button
+{
+	width: 70px;
+	height: 30px;
+	text-align: center;
+	font-weight: normal;
+	text-decoration: underline;
+	color: #F13C20;
+	background-color: #C5CBE3;
+	border: 1px;
+	border-radius: 14px;
+}
+
+.nav_button:hover
+{
+	background-color: orange;
+}
+
+.main_frame
+{
+	min-width: 1240px;
+	overflow-x: auto;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+}
+
+.menu_color
+{
+	background-color: #4056A1;
+}
+
+.main_frame_color
+{
+	background-color: #EFE2BA;
+}
+
+.login-register
+{
+	text-align: center;
+	padding-top: 50px;
+	padding-bottom: 23px;
+}
+
+.name_left 
+{
+	position: relative;
+	float: left;
+	font-size: large;
+	color: white;
+}
+
+.add_new
+{
+	text-align: center;
+}
+
+.main_info
+{
+	max-width: 1240px; 
+	overflow-x: auto; 
+	margin: auto; 
+	padding-left: 20px; 
+	padding-right: 20px;
+}
+.main_table
+{
+	border: none;
+	border-top: 3px solid grey;
+	border-collapse: collapse;
+	font-size: small;
+	text-align: left;
+	padding-left: 10px;
+	min-width: 810px;
+	margin: auto;
+}
+
+.max500
+{
+	max-height: 500px; 
+}
+
+.min500
+{
+	min-height: 500px; 
+}
+
+.invis
+{
+	visibility: hidden;
+	width: 20px;
+}
+.footer 
+{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+}
+

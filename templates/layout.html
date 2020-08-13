@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link href="/static/logbook.ico" rel="icon">
+
+        <title>Logbook: {% block title %}{% endblock %}</title>
+		<meta name="description" content="Are you looking for a free and easy online electronic Pilot Logbook? The Pilot's Logbook is a free online option to keep record of your flight time.">
+		<link rel="stylesheet" href="static/gen.css">
+		{% block style %}{% endblock %}
+
+	    <script  src="static/script.js"></script>
+
+    </head>
+
+    <body class="main_frame_color">
+
+		{% if session.user_id %}
+			<div class="main_frame menu_color">
+				<a href="/"><button name="b_flt" id="b_flt" class="nav_button" type="button">Flights</button></a>
+				<a href="/totals"><button name="b_tot" id="b_tot" class="nav_button" type="button">Totals</button></a>
+				<a href="/planes"><button name="b_pln" id="b_pln" class="nav_button" type="button">Planes</button></a>
+				<a href="/pilots"><button name="b_pil" id="b_pil" class="nav_button" type="button">Pilots</button></a>
+				<a href="/airports"><button name="b_ap" id="b_ap" class="nav_button" type="button">Airports</button></a>
+				<a href="/settings"><button name="b_settings" id="b_settings" class="nav_button" type="button">Settings</button></a>
+				<a href="/logout"><button name="b_logout" id="b_logout" class="nav_button" style="float: right;" type="button">Log Out</button></a>
+			</div>
+		{% else %}
+			<div class="main_frame menu_color" style="text-align: right;">
+				<i class="name_left">Pilot's Logbook</i>
+				<a href="/login"><button name="b_login" id="b_login" class="nav_button" type="button">Log In</button></a>
+				<a href="/register"><button name="b_register" id="b_register" class="nav_button" type="button">Register</button></a>
+<!--			<button name="b_exp" id="b_exp" class="nav_button" type="button">Export as CSV</button> -->
+			</div>
+		{% endif %}
+
+		<div class="main_frame main_frame_color">
+		    <main>
+				<!-- MAIN block of HTML -->
+		        {% block main %}{% endblock %}
+		    </main>
+
+
+		    <footer class="footer">
+				<!-- FOOTER block of HTML -->
+		        {% block footer %}{% endblock %}
+				<div style="text-align: left; font-size: x-small;">
+					For feedback and suggestions please <a href="mailto:pilotslogbook@hotmail.com?subject=Pilot%27s%20Logbook%20feedback%20and%20suggestions">send us email</a>.<i style="float: right;">Pilot's Logbook version {{ version }}</i>
+				</div>
+			</footer>
+		</div>
+
+
+    </body>
+</html>
+

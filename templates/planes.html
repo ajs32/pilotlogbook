@@ -1,0 +1,146 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Planes
+{% endblock %}
+{% block style %}
+	<link rel="stylesheet" href="static/pages.css">
+{% endblock %}
+
+{% block main %}
+	<div style="text-align: center;">
+		{% if col == "red"%}
+			<label name="plane_msg" id="plane_msg" style="color: red;">{{ msg }}</label><br>
+		{% else %}
+			<label name="plane_msg" id="plane_msg" style="color: green;">{{ msg }}</label><br>
+		{% endif %}
+	</div>
+
+	<form id="f_addpln" name="f_addpln" action="/planes" method="post">
+		<div class="add_new">
+			{% if plane_data %}
+				<table class="main_table">
+					<thead>
+						<caption style="text-align: left; font-size:large;"><label style="float: left;" for="f_addpln" name="label">{{ lbl }}</label> <i style="float: right; color: darkred;"><small>Ensure there is no XXX in aircraft data for correct TOTAL times</small></i></caption>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+			<!-- id HTML, name JAVASCRIPT -->
+								<input type="text" maxlength='8' value="{{ plane_data[1] }}" title="Aircraft Registration" placeholder="Aircraft Registration" id="tail" name="tail">
+								<input type="text" maxlength='10' value="{{ plane_data[2] }}" title="Aircraft Type" placeholder="Aircraft Type" id="type" name="type">
+								<input type="text" maxlength='10' value="{{ plane_data[3] }}" title="Aircraft Model" placeholder="Model" id="model" name="model">
+								<select id="class" name="class" title="ME/SE Jet/Prop/Pist" style="width:150px; height:28px;">
+									{% if plane_data[4] == "XXXXXX" %}
+										<option selected disabled value="">Jet/Prop/Piston</option>
+									{% else %}
+										<option disabled value="">Jet/Prop/Piston</option>
+									{% endif %}
+									{% if plane_data[4] == 'MEJet' %}
+										<option selected value="MEJet">ME JET (turbofan)</option>
+									{% else %}
+										<option value="MEJet">ME JET (turbofan)</option>
+									{% endif %}
+									{% if plane_data[4] == 'SEJet' %}
+										<option selected value="SEJet">SE JET (turbofan)</option>
+									{% else %}
+										<option value="SEJet">SE JET (turbofan)</option>
+									{% endif %}
+									{% if plane_data[4] == 'MEProp' %}
+										<option selected value="MEProp">ME PROP (turboprop)</option>
+									{% else %}
+										<option value="MEProp">ME PROP (turboprop)</option>
+									{% endif %}
+									{% if plane_data[4] == 'SEProp' %}
+										<option selected value="SEProp">SE PROP (turboprop)</option>
+									{% else %}
+										<option value="SEProp">SE PROP (turboprop)</option>
+									{% endif %}
+									{% if plane_data[4] == 'MEPist' %}
+										<option selected value="MEPist">ME Piston</option>
+									{% else %}
+										<option value="MEPist">ME Piston</option>
+									{% endif %}
+									{% if plane_data[4] == 'SEPist' %}
+										<option selected value="SEPist">SE Piston</option>
+									{% else %}
+										<option value="SEPist">SE Piston</option>
+									{% endif %}
+								</select>
+								<button id="b_addpln" name="b_addpln" type="button" onclick="update_plane()" style="width:145px;">Update Plane</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			{% else %}
+				<table class="main_table">
+					<thead>
+						<caption style="text-align: left; font-size:large;"><label style="float: left;" for="f_addpln" name="label">{{ lbl }}</label> <i style="float: right; color: darkred;"><small>Ensure there is no XXX in aircraft data for correct TOTAL times</small></i></caption>
+
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+			<!-- id HTML, name JAVASCRIPT -->
+								<input type="text" maxlength='8' title="Aircraft Registration" placeholder="Aircraft Registration" id="tail" name="tail">
+								<input type="text" maxlength='10' title="Aircraft Type" placeholder="Aircraft Type" id="type" name="type">
+								<input type="text" maxlength='10' title="Aircraft Model" placeholder="Model" id="model" name="model">
+								<select id="class" name="class" title="ME/SE Jet/Prop/Pist" style="width:150px; height:28px;">
+									<option selected disabled value="">Jet/Prop/Piston</option>
+									<option value="MEJet">ME JET (turbofan)</option>
+									<option value="SEJet">SE JET (turbofan)</option>
+									<option value="MEProp">ME PROP (turboprop)</option>
+									<option value="SEProp">SE PROP (turboprop)</option>
+									<option value="MEPist">ME Piston</option>
+									<option value="SEPist">SE Piston</option>
+								</select>
+								<button id="b_addpln" name="b_addpln" type="button" onclick="add_plane()" style="width:145px;">Add New Plane</button>
+							</td>
+						</tr>
+					<tbody>
+				</table>
+			{% endif %}
+		</div>
+
+		<div class="main_info">
+
+			{% if plane_data %}
+				<input type="text" id="pln_id" name="pln_id" class="invis" value="{{ plane_data[0] }}">
+			{% else %}
+				<input type="text" id="pln_id" name="pln_id" class="invis">
+			{% endif %}
+			<input type="text" id="todo" name="todo" class="invis">
+			<input type="text" id="key" name="key" class="invis">
+
+			<table class="main_table">
+				<thead>
+					<caption style="text-align: left; font-size:large;"><label>Aircraft List</label></caption>
+					<tr>
+						<th>Aircraft Registration</th><th>Aircraft Type</th><th>Aircraft Model</th><th>Jet/Prop/Piston (ME/SE)</th>
+					</tr>
+				</thead>
+				{% if plane_list %}
+				
+					{% for i in range(length) %}
+						{% if plane_list[i][0] != "XXX" and plane_list[i][0] != "MEJET" and plane_list[i][0] != "MEPROP" and plane_list[i][0] != "MEPIST" and plane_list[i][0] != "SEJET" and plane_list[i][0] != "SEPROP" and plane_list[i][0] != "SEPIST" %}
+
+							<tr id="row{{i}}" name="row{{i}}"
+									onmouseover="col_selected({{ i }});" onmouseleave="col_norm({{ i }})"  onclick="set_id({{ plane_list[i][4] }})">
+
+								<td>{{ plane_list[i][0] }}</td><td>{{ plane_list[i][1] }}</td><td>{{ plane_list[i][2] }}</td><td>{{ plane_list[i][3] }}</td>
+	<!--							<td><button name="b_edit{{ i }}" id="b_edit{{ i }}" class="edit_button" type="button" onclick="set_id({{ plane_list[i][4] }})">edit</button></td> -->
+							</tr>
+						{% endif %}
+					{% endfor %}
+				{% else %}
+					<tr><td><p style="color: red">No data available</p></td></tr>
+				{% endif %}
+			</table>
+		</div>
+	</form>
+
+    <script  src="static/planes.js"></script>
+
+{% endblock %}
+

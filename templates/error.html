@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block main %}
+	<div class="main_info">
+		<p style="color: red;">{{msg}}</p>
+	</div>
+
+	<a href="/"><button type="button">Return to main</button></a>
+{% endblock %}
+
